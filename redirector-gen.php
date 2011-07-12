@@ -1,5 +1,4 @@
 <?
-
 /*
 
 
@@ -15,15 +14,11 @@ no user input - just edit the source code.
 
 
 function strip_domain($s) {
-	global $olddomain;
-
+	global $olddomain; // eh.
 	$s = str_replace($olddomain . '/',$olddomain,$s); // could cause bug if you have http://olddomain.com/olddomain/test.htm 
 	$s = str_replace('http://www.' . $olddomain,'',$s);
 	$s = str_replace('http://' . $olddomain,'',$s);
-
-
 	return $s;
-
 }
 $olddomain = 'oldsite.com'; //no www, no http. eg just example.com
 
@@ -37,31 +32,18 @@ $data = '
 $data = (explode("\n",trim($data)));
 
 foreach($data as $d) {
-	$d = trim($d);
-	$d = explode(',',$d);
-
-	$old = trim($d[0]);
+	$d = explode(',',trim($d));
+	$old = strip_domain( trim($d[0]) );
 	$new = trim($d[1]);
 
-	$old = strip_domain($old);
-
-	echo '<pre>';
-
-	print_r($old);
-	print_r($new);
-
 	if ($old!='' && $new != '') {
-
 		$output.="\n      " . 'RewriteRule ^' .$old . '$ ' . $new . ' [R=301,L]';
-
 	}
 
 }
 
 
-echo "
-
-<textarea style='width:100%;height:500px'><IfModule mod_rewrite.c>
+echo "<textarea style='width:100%;height:500px'><IfModule mod_rewrite.c>
   RewriteEngine on
   RewriteBase /
 	$output
